@@ -1,0 +1,153 @@
+# ======================================================
+# Linked List Implementation in Python
+# Covers:
+# Traversal, Insertion, Deletion, Reversal, Cycle Detection
+# ======================================================
+
+# -----------------------------
+# Node Class
+# -----------------------------
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+# -----------------------------
+# Linked List Class
+# -----------------------------
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # -------------------------
+    # Traversal
+    # -------------------------
+    def traverse(self):
+        current = self.head
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")
+
+    # -------------------------
+    # Insertion
+    # -------------------------
+    def insert_at_beginning(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+
+    def insert_at_end(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
+
+    def insert_at_position(self, data, pos):
+        if pos == 0:
+            self.insert_at_beginning(data)
+            return
+        new_node = Node(data)
+        current = self.head
+        for _ in range(pos - 1):
+            if not current:
+                return  # Position out of bounds
+            current = current.next
+        if not current:
+            return
+        new_node.next = current.next
+        current.next = new_node
+
+    # -------------------------
+    # Deletion
+    # -------------------------
+    def delete_at_beginning(self):
+        if self.head:
+            self.head = self.head.next
+
+    def delete_at_end(self):
+        if not self.head:
+            return
+        if not self.head.next:
+            self.head = None
+            return
+        current = self.head
+        while current.next.next:
+            current = current.next
+        current.next = None
+
+    def delete_at_position(self, pos):
+        if pos == 0:
+            self.delete_at_beginning()
+            return
+        current = self.head
+        for _ in range(pos - 1):
+            if not current or not current.next:
+                return  # Position out of bounds
+            current = current.next
+        if current.next:
+            current.next = current.next.next
+
+    # -------------------------
+    # Reversal
+    # -------------------------
+    def reverse_iterative(self):
+        prev = None
+        current = self.head
+        while current:
+            nxt = current.next
+            current.next = prev
+            prev = current
+            current = nxt
+        self.head = prev
+
+    def reverse_recursive(self, node):
+        if not node or not node.next:
+            return node
+        rest = self.reverse_recursive(node.next)
+        node.next.next = node
+        node.next = None
+        return rest
+
+    # -------------------------
+    # Cycle Detection
+    # -------------------------
+    def has_cycle(self):
+        slow = fast = self.head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+
+
+# -----------------------------
+# Example Usage
+# -----------------------------
+if __name__ == "__main__":
+    ll = LinkedList()
+    
+    # Insertion
+    ll.insert_at_end(1)
+    ll.insert_at_end(2)
+    ll.insert_at_end(3)
+    ll.insert_at_beginning(0)
+    ll.insert_at_position(1.5, 2)
+
+    # Traversal
+    print("Linked List:")
+    ll.traverse()  # 0 -> 1 -> 1.5 -> 2 -> 3 -> None
+
+    # Reversal
+    ll.reverse_iterative()
+    print("Reversed Linked List (Iterative):")
+    ll.traverse()  # 3 -> 2 -> 1.5 -> 1 -> 0 -> None
+
+    # Check for cycle
+    print("Cycle Detected?", ll.has_cycle())  # False
