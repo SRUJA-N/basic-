@@ -1,0 +1,9 @@
+def sum_sub_array(arr,k):
+    maxsumm=0
+    window_sum=0
+    for i in range(k)://it will add upto the window size we want
+        window_sum+=arr[i]
+    for j in range(k,len(arr))://from window size to end 
+        window_sum+=arr[j]//add window next element
+        window_sum-=arr[j-k]//subtractt he window firast elemnt
+        maxsumm=max(maxsum,window_sum)
