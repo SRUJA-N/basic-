@@ -1,0 +1,29 @@
+def merge_sort(arr,low,high):
+    if(low>=high):
+        return
+    mid=(low+high)//2  //help to find out mid
+    merge_sort(arr,low,mid)// find out left half 
+    merge_sort(arr,mid+1,high)//find out right half
+    merge(arr,low,mid,high)//merge the riht and left
+def merge(arr,low,mid,high):
+    temp=[]
+    i=low
+    j=mid+1
+    while(i<=mid and j<=high): //run until the bigger length array id finshed
+        if(arr[i]<arr[j]):  //cheack each elemnt 
+            temp.append(arr[i])
+            i=i+1
+        else:
+            temp.append(arr[j])
+            j=j+1
+    while(i<=mid):  //add the remaining elemnts from left array
+        temp.append(arr[i])
+        i=i+1
+    while(j<=high)://add the remaining elments from right array
+        temp.append(arr[j])
+        j=j+1
+    for k in range(len(temp)): //add the elemnts from temp to main array
+        arr[low+k]=temp[k]
+array=[7,5,4,3,2,1]
+merge_sort(array,0,len(array)-1)
+print(array)
